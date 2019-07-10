@@ -12,10 +12,19 @@ def main():
     #print("\nFiles: " + str(files) + "\n")
     total_lines = 0
     try:
+        in_comment = False
         for file in files:
             file_lines = 0
-            file_lines += sum(1 for line in open(file) if (line != "\n" and
-            "/*" not in line and "*/" not in line and "//" not in line))
+            for line in open(file):
+                line = line.replace(" ", "").replace("\t", "")
+                if(line != "\n" and "//" != line[0:2]):
+                    if "/*" in line:
+                        in_comment = True
+                    if "*/" in line:
+                        in_comment = False
+                    if not in_comment:
+                        #print("Line: " + line)
+                        file_lines +=1
             total_lines += file_lines
             print("Reading " + str(file) + "\nLines: " + str(file_lines))
         print("\nFiles: " + str(len(files)))
